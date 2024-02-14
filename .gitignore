@@ -171,3 +171,12 @@ etc/clusto*.conf
 # Lazygit
 !.config/lazygit/
 !.config/lazygit/config.yml
+
+# karabiner
+!.config/karabiner
+!.config/karabiner/*
+!.config/karabiner/*/*
+!.config/karabiner/*/*/*
+
+# Github
+!.config/gh/*
