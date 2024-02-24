@@ -13,3 +13,5 @@ opt.colorcolumn = "79"
 -- Turn Spell check on
 opt.spell = true
 opt.spelllang = "en_us"
+
+opt.clipboard = "unnamedplus"
