@@ -16,3 +16,5 @@ opt.softtabstop = 4
 -- Turn Spell check on
 opt.spell = true
 opt.spelllang = "en_us"
+
+opt.clipboard = "unnamedplus"
