@@ -1,0 +1,73 @@
+@import url("https://unpkg.com/@catppuccin/palette/css/catppuccin.css");
+@import url("https://fonts.googleapis.com/css2?family=Rancho&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
+body {
+  --secondary-background-color: var(--ctp-mocha-base);
+}
+
+#page-ctn,
+#page-header {
+  background-color: var(--ctp-mocha-mantle);
+  color: var(--ctp-mocha-text);
+  border: none;
+}
+.markdown-body {
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  background-color: var(--ctp-mocha-surface0);
+  color: var(--ctp-mocha-text);
+  padding: 1rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Rancho", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+header {
+  background-color: var(--ctp-mocha-surface0);
+}
+
+h2 {
+  color: var(--ctp-mocha-green);
+}
+
+h3 {
+  color: var(--ctp-mocha-blue);
+}
+
+h4 {
+  color: var(--ctp-mocha-pink);
+}
+
+h5 {
+  color: var(--ctp-mocha-red);
+}
+
+h6 {
+  color: var(--ctp-mocha-yellow);
+}
+
+p {
+  line-height: 1.4;
+}
+
+a,
+a:visited,
+a:hover,
+a:focus {
+  color: var(--ctp-mocha-green);
+  text-decoration: none;
+}
+
+a > svg > path {
+  fill: var(--ctp-mocha-teal);
+}
