@@ -9,9 +9,6 @@ opt.linebreak = true
 opt.breakat = " ^I!@*-+;:,./?"
 opt.breakindent = true
 opt.colorcolumn = "79"
-opt.tabstop = 4
-opt.shiftwidth = 4
-opt.softtabstop = 4
 
 -- Turn Spell check on
 opt.spell = true
