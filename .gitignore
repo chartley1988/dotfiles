@@ -38,7 +38,7 @@
 .zsh/*.swp
 
 # Git aliases, identification info
-!.gitconfig
+# !.gitconfig
 # The gitignore of this repository itself (!)
 !.gitignore
 # My global Git excludes file (acts as a global .gitignore)
@@ -178,5 +178,8 @@ etc/clusto*.conf
 !.config/karabiner/*/*
 !.config/karabiner/*/*/*
 
-# Github
-!.config/gh/*
+# kitty
+!.config/kitty
+!.config/kitty/*
+!.config/kitty/*/*
+!.config/kitty/*/*/*
