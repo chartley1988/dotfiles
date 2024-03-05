@@ -8,8 +8,11 @@ opt.wrap = true
 opt.linebreak = true
 opt.breakat = " ^I!@*-+;:,./?"
 opt.breakindent = true
-opt.colorcolumn = "79"
+opt.colorcolumn = "80"
+opt.columns = 80
 
 -- Turn Spell check on
 opt.spell = true
 opt.spelllang = "en_us"
+
+opt.foldmethod = "indent"

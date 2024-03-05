@@ -122,7 +122,7 @@ require("telescope").setup({
   },
 })
 
--- Simplify Telescop paths in file finder
+-- Simplify Telescope paths in file finder
 
 -- Setup file browswer
 require("telescope").setup({

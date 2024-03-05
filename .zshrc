@@ -72,6 +72,7 @@ ZSH_THEME="refined"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  poetry
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -128,3 +129,6 @@ alias zish="cd ~/; nvim ~/.zshrc"
 
 # open Projects folder
 alias projects="cd ~/Documents/Projects/"
+
+# Created by `pipx` on 2024-03-03 23:07:59
+export PATH="$PATH:/Users/chartley/.local/bin"
