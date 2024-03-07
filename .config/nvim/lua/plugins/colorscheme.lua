@@ -1,12 +1,5 @@
 return {
   {
-    "folke/tokyonight.nvim",
-    name = "tokyonight",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-  },
-  {
     "sainnhe/everforest",
     lazy = false,
     name = "everforest",
@@ -19,7 +12,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "tokyonight",
+      colorscheme = "catppuccin-macchiato",
     },
   },
 }
