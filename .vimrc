@@ -4,7 +4,8 @@ syntax enable
 call plug#begin()
 
 " Color Theme
-Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+set termguicolors
+Plug 'sainnhe/everforest'
 
 " Airline
 Plug 'vim-airline/vim-airline'
@@ -15,15 +16,20 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 
+" Vim Pencil
+Plug 'preservim/vim-pencil'
+
 " Astro 
 Plug 'wuelnerdotexe/vim-astro'
 
 call plug#end()
 
-let g:airline_theme = 'catppuccin_mocha'
+let g:airline_theme = 'everforest'
 
 " Options
-colorscheme catppuccin_mocha
+colorscheme everforest
+set background=light
+let g:everforest_background='hard'
 
 " General
 set number	" Show line numbers

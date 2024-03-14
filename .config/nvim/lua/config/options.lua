@@ -15,4 +15,4 @@ opt.columns = 80
 opt.spell = true
 opt.spelllang = "en_us"
 
-opt.foldmethod = "indent"
+opt.foldmethod = "manual"
