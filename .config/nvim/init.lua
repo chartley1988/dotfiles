@@ -117,6 +117,8 @@ vim.opt.breakindent = true
 vim.opt.linebreak = true
 vim.opt.breakat = ' ^I!@*-+;:,./?'
 vim.opt.tabstop = 4
+vim.opt.textwidth = 79
+vim.opt.colorcolumn = '+1'
 
 -- Save undo history
 vim.opt.undofile = true
@@ -150,6 +152,40 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+
+-- NOTE: Python Configs
+-- BASIC PYTHON-RELATED OPTIONS
+
+-- The filetype-autocmd runs a function when opening a file with the filetype
+-- "python". This method allows you to make filetype-specific configurations. In
+-- there, you have to use `opt_local` instead of `opt` to limit the changes to
+-- just that buffer. (As an alternative to using an autocmd, you can also put those
+-- configurations into a file `/after/ftplugin/{filetype}.lua` in your
+-- nvim-directory.)
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'python', -- filetype for which to run the autocmd
+  callback = function()
+    -- use pep8 standards
+    vim.opt_local.expandtab = true
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+
+    -- folds based on indentation https://neovim.io/doc/user/fold.html#fold-indent
+    -- if you are a heavy user of folds, consider using `nvim-ufo`
+
+    -- automatically capitalize boolean values. Useful if you come from a
+    -- different language, and lowercase them out of habit.
+    vim.cmd.inoreabbrev '<buffer> true True'
+    vim.cmd.inoreabbrev '<buffer> false False'
+
+    -- in the same way, we can fix habits regarding comments or None
+    vim.cmd.inoreabbrev '<buffer> -- #'
+    vim.cmd.inoreabbrev '<buffer> null None'
+    vim.cmd.inoreabbrev '<buffer> none None'
+    vim.cmd.inoreabbrev '<buffer> nil None'
+  end,
+})
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -308,7 +344,7 @@ require('lazy').setup {
       { -- If encountering errors, see telescope-fzf-native README for install instructions
         'nvim-telescope/telescope-fzf-native.nvim',
 
-        -- `build` is used to run some command when the plugin is installed/updated.
+        -- `buid` is used to run some command when the plugin is installed/updated.
         -- This is only run then, not every time Neovim starts up.
         build = 'make',
 
@@ -527,6 +563,35 @@ require('lazy').setup {
       --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+      -- NOTE: Python LSP settings
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+      -- setup pyright with completion capabilities
+      require('lspconfig').pyright.setup {
+        capabilities = capabilities,
+      }
+
+      -- setup taplo with completion capabilities
+      require('lspconfig').taplo.setup {
+        capabilities = capabilities,
+      }
+
+      -- ruff uses an LSP proxy, therefore it needs to be enabled as if it
+      -- were a LSP. In practice, ruff only provides linter-like diagnostics
+      -- and some code actions, and is not a full LSP yet.
+      require('lspconfig').ruff_lsp.setup {
+        -- organize imports disabled, since we are already using `isort` for that
+        -- alternative, this can be enabled to make `organize imports`
+        -- available as code action
+        settings = {
+          organizeImports = false,
+        },
+        -- disable ruff as hover provider to avoid conflicts with pyright
+        on_attach = function(client)
+          client.server_capabilities.hoverProvider = false
+        end,
+      }
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
       -- Enable the following language servers
@@ -593,6 +658,12 @@ require('lazy').setup {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format lua code
+        'pyright', -- Used to format Python
+        'ruff-lsp', -- linter for python
+        'black', -- formatter for python
+        'isort', -- organizes imports Python
+        'taplo', -- for python toml files
+        'debugpy', -- debugger
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -613,6 +684,16 @@ require('lazy').setup {
 
   { -- Autoformat
     'stevearc/conform.nvim',
+    event = 'BufWritePre', -- load the plugin before saving
+    keys = {
+      {
+        '<leader>f',
+        function()
+          require('conform').format { lsp_fallback = true }
+        end,
+        desc = 'Format',
+      },
+    },
     opts = {
       notify_on_error = false,
       format_on_save = {
@@ -627,6 +708,7 @@ require('lazy').setup {
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         javascript = { { 'prettierd', 'prettier' } },
+        markdown = { 'inject' },
       },
     },
   },
@@ -660,13 +742,42 @@ require('lazy').setup {
       --    you can use this plugin to help you. It even has snippets
       --    for various frameworks/libraries/etc. but you will have to
       --    set up the ones that are useful for you.
-      -- 'rafamadriz/friendly-snippets',
+      'rafamadriz/friendly-snippets',
     },
     config = function()
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
+      require('luasnip.loaders.from_vscode').lazy_load()
+
+      -- NOTE: Custom Snippets
+
+      local ls = require 'luasnip'
+      -- some shorthands...
+      local snip = ls.snippet
+      local node = ls.snippet_node
+      local text = ls.text_node
+      local insert = ls.insert_node
+      local func = ls.function_node
+      local choice = ls.choice_node
+      local dynamicn = ls.dynamic_node
+
+      local date = function()
+        return { os.date '## ***%I:%M %p***' }
+      end
+
+      ls.add_snippets(nil, {
+        markdown = {
+          snip({
+            trig = 'ts',
+            namr = 'TimeStamp',
+            dscr = 'Time stamp in the form of HH:MM AM',
+          }, {
+            func(date, {}),
+          }),
+        },
+      })
 
       cmp.setup {
         snippet = {
@@ -784,6 +895,104 @@ require('lazy').setup {
     end,
   },
 
+  -- better indentation behavior
+  -- by default, vim has some weird indentation behavior in some edge cases,
+  -- which this plugin fixes
+  { 'Vimjas/vim-python-pep8-indent' },
+
+  -- select virtual environments
+  -- - makes pyright and debugpy aware of the selected virtual environment
+  -- - Select a virtual environment with `:VenvSelect`
+  {
+    'linux-cultist/venv-selector.nvim',
+    dependencies = {
+      'neovim/nvim-lspconfig',
+      'nvim-telescope/telescope.nvim',
+      'mfussenegger/nvim-dap-python',
+    },
+    opts = {
+      dap_enabled = true, -- makes the debugger work with venv
+    },
+  },
+
+  -----------------------------------------------------------------------------
+  -- NOTE: Python Plugins
+  -- DEBUGGING
+
+  -- DAP Client for nvim
+  -- - start the debugger with `<leader>dc`
+  -- - add breakpoints with `<leader>db`
+  -- - terminate the debugger `<leader>dt`
+  {
+    'mfussenegger/nvim-dap',
+    keys = {
+      {
+        '<leader>dc',
+        function()
+          require('dap').continue()
+        end,
+        desc = 'Start/Continue Debugger',
+      },
+      {
+        '<leader>db',
+        function()
+          require('dap').toggle_breakpoint()
+        end,
+        desc = 'Add Breakpoint',
+      },
+      {
+        '<leader>dt',
+        function()
+          require('dap').terminate()
+        end,
+        desc = 'Terminate Debugger',
+      },
+    },
+  },
+
+  -- UI for the debugger
+  -- - the debugger UI is also automatically opened when starting/stopping the debugger
+  -- - toggle debugger UI manually with `<leader>du`
+  {
+    'rcarriga/nvim-dap-ui',
+    dependencies = 'mfussenegger/nvim-dap',
+    keys = {
+      {
+        '<leader>du',
+        function()
+          require('dapui').toggle()
+        end,
+        desc = 'Toggle Debugger UI',
+      },
+    },
+    -- automatically open/close the DAP UI when starting/stopping the debugger
+    config = function()
+      local listener = require('dap').listeners
+      listener.after.event_initialized['dapui_config'] = function()
+        require('dapui').open()
+      end
+      listener.before.event_terminated['dapui_config'] = function()
+        require('dapui').close()
+      end
+      listener.before.event_exited['dapui_config'] = function()
+        require('dapui').close()
+      end
+    end,
+  },
+
+  -- Configuration for the python debugger
+  -- - configures debugpy for us
+  -- - uses the debugpy installation from mason
+  -- {
+  --   'mfussenegger/nvim-dap-python',
+  --   dependencies = 'mfussenegger/nvim-dap',
+  --   config = function()
+  --     -- uses the debugypy installation by mason
+  --     local debugpyPythonPath = require('mason-registry').get_package('debugpy'):get_install_path() .. '/venv/bin/python3'
+  --     require('dap-python').setup(debugpyPythonPath, {})
+  --   end,
+  -- },
+  ---------------------------------------------------------------------------
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
@@ -792,7 +1001,24 @@ require('lazy').setup {
 
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup {
-        ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'astro' },
+        ensure_installed = {
+          'bash',
+          'c',
+          'html',
+          'lua',
+          'markdown',
+          'vim',
+          'vimdoc',
+          'astro',
+          'javascript',
+          'css',
+          'python',
+          'toml',
+          'ninja',
+          'rst',
+          'markdown',
+          'markdown_inline',
+        },
         -- Autoinstall languages that are not installed
         auto_install = true,
         highlight = { enable = true },
