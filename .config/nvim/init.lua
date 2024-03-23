@@ -142,6 +142,12 @@ vim.api.nvim_create_autocmd('FileType', {
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
+-- Zen Mode
+vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<CR>', { desc = 'Enter Zen Mode' })
+
+-- Toggle Spelling 'cs [C]heck [S]pelling'
+vim.keymap.set('n', '<leader>cs', '<cmd>setlocal spell spelllang=en_us<CR>', { desc = 'Check spelling' })
+
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -215,6 +221,22 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup {
+
+  -- LazyGit
+  {
+    'kdheepak/lazygit.nvim',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+      'nvim-lua/plenary.nvim',
+    },
+    config = function()
+      require('telescope').load_extension 'lazygit'
+      vim.keymap.set('n', '<leader>gl', '<CMD>LazyGit<CR>', { desc = 'Git - LazyGit' })
+    end,
+  },
+
+  'ggandor/leap.nvim',
+
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
@@ -276,7 +298,7 @@ require('lazy').setup {
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-        ['<leader>g'] = { name = '[G]it (Neogit)', _ = 'which_key_ignore' },
+        ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
       }
     end,
   },
@@ -816,7 +838,7 @@ require('lazy').setup {
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       -- Load the colorscheme here
-      vim.cmd.colorscheme 'catppuccin-macchiato'
+      vim.cmd.colorscheme 'catppuccin-frappe'
 
       -- You can configure highlights by doing something like
       vim.cmd.hi 'Comment gui=none'
@@ -836,13 +858,6 @@ require('lazy').setup {
       --  - yinq - [Y]ank [I]nside [N]ext [']quote
       --  - ci'  - [C]hange [I]nside [']quote
       require('mini.ai').setup { n_lines = 500 }
-
-      -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -1067,3 +1082,6 @@ null_ls.setup {
 
 -- Setup Oil for file navigation and manipulation
 require('oil').setup()
+
+-- Setup Leap
+require('leap').create_default_mappings()
