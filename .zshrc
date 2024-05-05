@@ -170,5 +170,9 @@ alias zish="cd ~/; nvim ~/.zshrc"
 # open Projects folder
 alias projects="cd ~/Documents/Projects/"
 
+alias vpn="ssh chartley@api.carsonhartley.com -p 49512"
+
 # Created by `pipx` on 2024-03-03 23:07:59
 export PATH="$PATH:/Users/chartley/.local/bin"
+
+

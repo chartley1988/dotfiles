@@ -1,4 +1,5 @@
 --[[
+--NOTE:
     If you don't know anything about Lua, I recommend taking some time to read through
     a guide. One possible example which will only take 10-15 minutes:
       - https://learnxinyminutes.com/docs/lua/
@@ -147,6 +148,8 @@ vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<CR>', { desc = 'Enter Zen Mode' }
 
 -- Toggle Spelling 'cs [C]heck [S]pelling'
 vim.keymap.set('n', '<leader>cs', '<cmd>setlocal spell spelllang=en_us<CR>', { desc = 'Check spelling' })
+
+vim.keymap.set('n', '<leader>f', '<cmd>:lua MiniFiles.open()<CR>', { desc = 'Open File Manager' })
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
@@ -633,6 +636,7 @@ require('lazy').setup {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format lua code
+        'typescript-language-server',
         'pyright', -- Used to format Python
         'ruff-lsp', -- linter for python
         'black', -- formatter for python
@@ -685,7 +689,10 @@ require('lazy').setup {
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         javascript = { { 'prettierd', 'prettier' } },
-        markdown = { 'inject' },
+        typescript = { { 'prettierd', 'prettier' } },
+        javascriptreact = { { 'prettierd', 'prettier' } },
+        typescriptreact = { { 'prettierd', 'prettier' } },
+        markdown = { 'markdownlint', 'inject' },
       },
     },
   },
@@ -863,6 +870,7 @@ require('lazy').setup {
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
       local statusline = require 'mini.statusline'
+      require('mini.files').setup()
       statusline.setup()
 
       -- You can configure sections in the statusline by overriding their
@@ -1079,9 +1087,6 @@ null_ls.setup {
     null_ls.builtins.formatting.black,
   },
 }
-
--- Setup Oil for file navigation and manipulation
-require('oil').setup()
 
 -- Setup Leap
 require('leap').create_default_mappings()
