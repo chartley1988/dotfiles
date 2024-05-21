@@ -245,6 +245,9 @@ require('lazy').setup {
 
   'ggandor/leap.nvim',
 
+  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -544,10 +547,6 @@ require('lazy').setup {
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-      require('lspconfig').cssls.setup {
-        capabilities = capabilities,
-      }
-
       -- NOTE: Python LSP settings
       capabilities.textDocument.completion.completionItem.snippetSupport = true
 
@@ -696,7 +695,6 @@ require('lazy').setup {
         -- is found.
         javascript = { { 'prettierd', 'prettier' } },
         typescript = { { 'prettierd', 'prettier' } },
-        css = { { 'prettier, prettierd' } },
         javascriptreact = { { 'prettierd', 'prettier' } },
         typescriptreact = { { 'prettierd', 'prettier' } },
         markdown = { 'markdownlint', 'inject' },
