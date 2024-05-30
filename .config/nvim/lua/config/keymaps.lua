@@ -4,7 +4,6 @@
 --
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Center cursor after moving down half-page" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Center cursor after moving up half-page" })
-vim.api.nvim_set_keymap("n", "<space>d", ":Telescope file_browser<CR>", { noremap = true })
 
 -- Set window switch keys for tmux
 vim.keymap.set("n", "<C-h>", vim.cmd.TmuxNavigateLeft, { noremap = true, desc = "Window to the left" })

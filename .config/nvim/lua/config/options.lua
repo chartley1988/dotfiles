@@ -11,6 +11,8 @@ opt.breakindent = true
 opt.colorcolumn = "80"
 opt.columns = 80
 
+opt.smartindent = true
+
 -- Turn Spell check on
 opt.spell = true
 opt.spelllang = "en_us"

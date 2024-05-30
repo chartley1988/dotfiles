@@ -84,3 +84,8 @@ require("nvim-web-devicons").setup({
     },
   },
 })
+
+local wk = require("which-key")
+wk.register({
+  ["<leader>t"] = { name = "Obsidian", _ = "which_key_ignore" },
+})
