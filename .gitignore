@@ -178,8 +178,8 @@ etc/clusto*.conf
 !.config/karabiner/*/*
 !.config/karabiner/*/*/*
 
-# kitty
-!.config/kitty
-!.config/kitty/*
-!.config/kitty/*/*
-!.config/kitty/*/*/*
+# alacritty
+!.config/alacritty
+!.config/alacritty/*
+!.config/alacritty/*/*
+!.config/alacritty/*/*/*
