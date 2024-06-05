@@ -1,14 +1,10 @@
 return {
   {
-    "sainnhe/everforest",
-    lazy = false,
-    name = "everforest",
-    priority = 1000,
-    config = function()
-      vim.g.everforest_background = "hard"
-    end,
+    "catppuccin",
+    opts = {
+      transparent_background = true,
+    },
   },
-  { "catppuccin/nvim", name = "catppuccin", priority = 1000, lazy = false },
   {
     "LazyVim/LazyVim",
     opts = {
