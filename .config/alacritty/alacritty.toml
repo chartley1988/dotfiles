@@ -3,7 +3,6 @@ import = ['~/.config/alacritty/catppuccin/catppuccin-mocha.toml']
 # Theme
 [font]
 size = 24.0
-offset = { y = 7, x = 0 }
 
 [font.bold]
 family = "CaskaydiaCove Nerd Font"

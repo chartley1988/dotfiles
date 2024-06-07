@@ -26,8 +26,3 @@ if [ -d "$HOME/.local/bin" ]; then
 	PATH="$HOME/.local/bin:$PATH"
 fi
 
-setxkbmap -option 'caps:ctrl_modifer'
-xcape -e 'Caps_Lock=Escape'
-
-setxkbmap -option 'caps:ctrl_modifer'
-xcape -e 'Caps_Lock=Escape;Control_L=Escape;Control_R=Escape'
