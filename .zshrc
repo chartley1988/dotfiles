@@ -8,7 +8,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="refined"
+# ZSH_THEME="refined"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -70,12 +70,19 @@ ZSH_THEME="refined"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+
+
 plugins=(
   git
   poetry
 )
 
 source $ZSH/oh-my-zsh.sh
+
+# Source zsh-syntax-highlighting
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 
 # User configuration
 
@@ -103,6 +110,9 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Load FZF config
+export FZF_DEFAULT_OPTS=$(cat ~/.config/fzf/.fzfrc)
+
 # Godot Config Stuff
 export GODOT4="/Users/chartley/Documents/Areas/Game Development/Godot C#/Godot_mono.app/Contents/MacOS/Godot"
 
@@ -111,45 +121,12 @@ export PATH=$PATH:$HOME/dotnet
 
 export EDITOR=nvim
 
-# Sets nnn to cd on quit
-n ()
-{
-    # Block nesting of nnn in subshells
-    [ "${NNNLVL:-0}" -eq 0 ] || {
-        echo "nnn is already running"
-        return
-    }
-
-    # The behaviour is set to cd on quit (nnn checks if NNN_TMPFILE is set)
-    # If NNN_TMPFILE is set to a custom path, it must be exported for nnn to
-    # see. To cd on quit only on ^G, remove the "export" and make sure not to
-    # use a custom path, i.e. set NNN_TMPFILE *exactly* as follows:
-    #      NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-
-    # Unmask ^Q (, ^V etc.) (if required, see `stty -a`) to Quit nnn
-    # stty start undef
-    # stty stop undef
-    # stty lwrap undef
-    # stty lnext undef
-
-    # The command builtin allows one to alias nnn to n, if desired, without
-    # making an infinitely recursive alias
-    command nnn "$@"
-
-    [ ! -f "$NNN_TMPFILE" ] || {
-        . "$NNN_TMPFILE"
-        rm -f -- "$NNN_TMPFILE" > /dev/null
-    }
-}
 
 # Aliases
 
 # Open text files with nvim
 alias ea='${EDITOR:-vim} ${ZDOTDIR:-$HOME}/.zshrc'
 
-# Open nnn with -e
-alias ls='n'
 
 # alias to love
 alias love="/Applications/love.app/Contents/MacOS/love"
@@ -175,4 +152,7 @@ alias vpn="ssh chartley@api.carsonhartley.com -p 49512"
 # Created by `pipx` on 2024-03-03 23:07:59
 export PATH="$PATH:/Users/chartley/.local/bin"
 
+eval "$(starship init zsh)"
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source ~/.config/fzf/scripts.sh

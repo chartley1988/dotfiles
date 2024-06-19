@@ -30,7 +30,6 @@ require("lazy").setup({
     -- version = "*", -- try installing the latest stable version for plugins
     -- that support semver
   },
-  install = { colorscheme = { "catppuccin" } },
   checker = { enabled = true }, -- automatically check for plugin updates
   performance = {
     rtp = {
@@ -53,8 +52,8 @@ require("lazy").setup({
 -- Configure Headlines
 require("headlines").setup({
   markdown = {
-    fat_headline_upper_string = "",
-    fat_headline_lower_string = "_",
+    fat_headline_upper_string = "-",
+    fat_headline_lower_string = "",
   },
 })
 
@@ -66,18 +65,13 @@ vim.filetype.add({
 })
 
 -- NOTE: Astro Configs
-require("lspconfig").astro.setup({})
-vim.filetype.add({
-  extension = {
-    astro = "astro",
-  },
-})
 vim.treesitter.language.register("markdown", "mdx")
+
 -- Astro devicons
 require("nvim-web-devicons").setup({
   strict = true,
   override_by_extension = {
-    astro = {
+    ["astro"] = {
       icon = "",
       color = "#EF8547",
       name = "astro",

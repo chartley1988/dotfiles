@@ -37,6 +37,7 @@
 # Swapfiles (sigh)
 .zsh/*.swp
 
+
 # Git aliases, identification info
 # !.gitconfig
 # The gitignore of this repository itself (!)
@@ -183,3 +184,9 @@ etc/clusto*.conf
 !.config/alacritty/*
 !.config/alacritty/*/*
 !.config/alacritty/*/*/*
+
+!.config/fzf/
+!.config/fzf/*
+!.config/fzf/*/*
+
+!Documents

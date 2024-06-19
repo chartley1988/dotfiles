@@ -1,4 +1,5 @@
-import = ['~/.config/alacritty/catppuccin/catppuccin-mocha.toml']
+import = ["~/.config/alacritty/themes/themes/everforest_dark.toml"]
+
 
 # Theme
 [font]
@@ -21,6 +22,7 @@ family = "CaskaydiaCove Nerd Font"
 style = "Regular"
 
 [window]
-opacity = 0.85
+opacity = 0.90
 decorations = "none"
 startup_mode = "Maximized"
+option_as_alt = "OnlyLeft"
